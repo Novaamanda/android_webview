@@ -34,6 +34,7 @@ import com.robotemplates.webviewapp.WebViewAppConfig;
 import com.robotemplates.webviewapp.utility.DownloadUtility;
 import com.robotemplates.webviewapp.utility.Logcat;
 import com.robotemplates.webviewapp.utility.NetworkManager;
+import com.robotemplates.webviewapp.utility.webappinterface;
 import com.robotemplates.webviewapp.view.ViewState;
 
 import java.io.File;
@@ -123,6 +124,8 @@ public class MainFragment extends TaskFragment implements SwipeRefreshLayout.OnR
 		{
 			WebView webView = (WebView) mRootView.findViewById(R.id.fragment_main_webview);
 			webView.restoreState(savedInstanceState);
+
+			webView.addJavascriptInterface(new webappinterface(getActivity().getApplicationContext()), "Android");
 		}
 
 		// setup webview
@@ -280,6 +283,9 @@ public class MainFragment extends TaskFragment implements SwipeRefreshLayout.OnR
 		// save webview state
 		WebView webView = (WebView) mRootView.findViewById(R.id.fragment_main_webview);
 		webView.saveState(outState);
+
+		webView.addJavascriptInterface(new webappinterface(getActivity().getApplicationContext()), "Android");
+
 	}
 
 
@@ -349,7 +355,10 @@ public class MainFragment extends TaskFragment implements SwipeRefreshLayout.OnR
 
 			// load web url
 			WebView webView = (WebView) mRootView.findViewById(R.id.fragment_main_webview);
+			webView.addJavascriptInterface(new webappinterface(getActivity().getApplicationContext()), "Android");
 			webView.loadUrl(mUrl);
+
+
 		}
 		else
 		{
@@ -367,6 +376,7 @@ public class MainFragment extends TaskFragment implements SwipeRefreshLayout.OnR
 
 			// load web url
 			WebView webView = (WebView) mRootView.findViewById(R.id.fragment_main_webview);
+			webView.addJavascriptInterface(new webappinterface(getActivity().getApplicationContext()), "Android");
 			webView.loadUrl(webView.getUrl());
 		}
 		else
@@ -478,6 +488,7 @@ public class MainFragment extends TaskFragment implements SwipeRefreshLayout.OnR
 	{
 		// reference
 		final WebView webView = (WebView) mRootView.findViewById(R.id.fragment_main_webview);
+		webView.addJavascriptInterface(new webappinterface(getActivity().getApplicationContext()), "Android");
 
 		// webview settings
 		webView.getSettings().setBuiltInZoomControls(false);

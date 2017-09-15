@@ -1,10 +1,14 @@
 package com.robotemplates.webviewapp.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -13,15 +17,33 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+
+import com.robotemplates.webviewapp.Model.DataRadius;
+import com.robotemplates.webviewapp.Model.DataWifi;
+import com.robotemplates.webviewapp.Network.ApiConfig;
+import com.robotemplates.webviewapp.Network.IAPI;
 import com.robotemplates.webviewapp.R;
 import com.robotemplates.webviewapp.adapter.DrawerAdapter;
 import com.robotemplates.webviewapp.fragment.MainFragment;
+import com.robotemplates.webviewapp.utility.DistanceUtil;
+import com.robotemplates.webviewapp.utility.ScanResultComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MainActivity extends ActionBarActivity
@@ -33,6 +55,9 @@ public class MainActivity extends ActionBarActivity
 	private CharSequence mTitle;
 	private CharSequence mDrawerTitle;
 	private String[] mTitles;
+
+	private List<ScanResult> results = new ArrayList<>();
+	private Retrofit retrofit;
 
 
 	public static Intent newIntent(Context context)
@@ -231,4 +256,81 @@ public class MainActivity extends ActionBarActivity
 		if(!init) setTitle(mTitles[position]);
 		mDrawerLayout.closeDrawer(mDrawerListView);
 	}
+
+	private void initRetrofit(){
+		retrofit = new Retrofit.Builder().baseUrl(ApiConfig.BASE_URL)
+				.addConverterFactory(GsonConverterFactory.create())
+				.build();
+
+//        ambilData(retrofit);
+	}
+
+	//region WIFI.
+	private List<DataWifi> buatModelWifi(List<ScanResult> results){
+		List<DataWifi> listData = new ArrayList<>();
+
+		for(ScanResult dataScan : results){
+			DataWifi tmpData = new DataWifi(dataScan.SSID, dataScan.frequency, dataScan.level);
+
+			// if untuk filter jarak disini
+			double distance = DistanceUtil.calculateDistance((double) tmpData.getLevel(),
+					(double) tmpData.getFrekuensi());
+			tmpData.setJarak(distance);
+
+			if(distance < 10) {
+				listData.add(tmpData);
+			}
+		}
+
+		return listData;
+	}
+
+//	private void scanWifi(){
+//		@SuppressLint("WifiManagerLeak") final
+//		WifiManager wifi = (WifiManager) getSystemService(this.getApplicationContext().WIFI_SERVICE);
+//
+//		final Handler handler = new Handler();
+//		handler.postDelayed(new Runnable() {
+//			@Override
+//			public void run() {
+//				wifi.startScan();
+//				results = wifi.getScanResults();
+//				Collections.sort(results, new ScanResultComparator());
+//				adapter.setData(buatModelWifi(results));
+//				adapter.notifyDataSetChanged();
+//
+//				List<DataWifi> listData = new ArrayList<>();
+//				listData = buatModelWifi(results);
+//
+//				kirimDataRadius(String.valueOf(listData.get(0).getJarak()), String.valueOf(listData.get(1).getJarak())
+//						, String.valueOf(listData.get(2).getJarak()));
+//
+//
+//				Log.d("LOG_RESULT", wifi.getScanResults().toString());
+//				Log.d("LOG_RESULT_2", buatModelWifi(results).toString());
+//				scanWifi();
+//			}
+//		}, 3000);
+//	}
+	//endregion\
+
+	// POST data ke server
+//	private void kirimDataRadius(String dataRadius1, String dataRadius2, String dataRadius3){
+//		IAPI iApi = retrofit.create(IAPI.class);
+//		Call<DataRadius> data = iApi.postDataRadius(dataRadius1, dataRadius2, dataRadius3);
+//		data.enqueue(new Callback<DataRadius>() {
+//			@Override
+//			public void onResponse(Call<DataRadius> call, Response<DataRadius> response) {
+//				Log.d("LOG_RESPONSE", response.toString());
+//				Log.d("LOG_RESPONSE_2", response.body().getPesan());
+//			}
+//
+//			@Override
+//			public void onFailure(Call<DataRadius> call, Throwable t) {
+//				t.printStackTrace();
+//				Log.d("LOG_FAIL", "fail");
+//
+//			}
+//		});
+//	}
 }

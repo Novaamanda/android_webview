@@ -15,4 +15,6 @@
 	<string name="placeholder_offline">No Internet connection available</string>
 
 	<string name="fragment_main_downloading">Downloading…</string>
+
+	<string name="Ip">http://172.168.2.212</string>
 </resources>
