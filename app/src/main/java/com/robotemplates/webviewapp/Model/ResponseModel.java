@@ -5,4 +5,13 @@ package com.robotemplates.webviewapp.Model;
  */
 
 public class ResponseModel {
+    private String pesan;
+
+    public String getPesan() {
+        return pesan;
+    }
+
+    public void setPesan(String pesan) {
+        this.pesan = pesan;
+    }
 }

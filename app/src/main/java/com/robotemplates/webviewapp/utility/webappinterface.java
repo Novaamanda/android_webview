@@ -9,6 +9,8 @@ import android.webkit.JavascriptInterface;
 import android.widget.Toast;
 
 import com.google.android.gms.wearable.DataEvent;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.robotemplates.webviewapp.Model.DataRadius;
 import com.robotemplates.webviewapp.Model.DataWifi;
 import com.robotemplates.webviewapp.Model.ResponseModel;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -125,14 +128,17 @@ public class webappinterface {
                                  String dataLatitude,
                                  String dataLongitude,
                                  String dataWaktu){
+
+        Log.d("LOG_HAZARD", dataTypehazard);
+
         IAPI iApi = retrofit.create(IAPI.class);
         Call<ResponseModel> data = iApi.postDataHazard(dataCookieshazard, dataIdUser, dataTypehazard, dataPenyebabhazard,
-                dataDeskripsi,  dataKodeBandara, dataImage, dataImage1, dataLatitude, dataLongitude, dataWaktu);
+                dataDeskripsi,  dataKodeBandara, "a", "b", dataLatitude, dataLongitude, dataWaktu);
         data.enqueue(new Callback<ResponseModel>() {
             @Override
             public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
                 Log.d("LOG_RESPONSE", response.toString());
-//                Log.d("LOG_RESPONSE_2", response.body().getPesan());
+                Log.d("LOG_RESPONSE_2", response.body().getPesan());
             }
 
             @Override
@@ -172,8 +178,14 @@ public class webappinterface {
     } //kirim data event
 
     private void initRetrofit(){
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        OkHttpClient client = new OkHttpClient();
+
         retrofit = new Retrofit.Builder().baseUrl(ApiConfig.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(client)
                 .build();
     }
 }

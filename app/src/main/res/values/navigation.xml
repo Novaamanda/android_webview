@@ -44,15 +44,15 @@
 	<!--</string-array>-->
 
 	<string-array name="navigation_url_list">
-		<item>http://192.168.2.212/manda3/sheapp_prototype/index.php</item>
+		<item>http://192.168.88.16/manda3/sheapp_prototype/index.php</item>
 		<!--<item>http://192.168.88.20/manda3/getlintang/tescoba.php</item>-->
 		<!--<item>http://192.168.88.21/ivan/tes.php</item>-->
-		<item>http://192.168.2.212/manda3/sheapp_prototype/crud_hazard_android.php</item>
-		<item>http://192.168.2.212/manda3/sheapp_prototype/crud_event.php</item>
-		<item>http://192.168.2.212/manda3/sheapp_prototype/contact.php</item>
-		<item>http://192.168.2.212/manda3/sheapp_prototype/notification.php</item>
-		<item>http://192.168.2.212/manda3/sheapp_prototype/account_conf.php</item>
-		<item>http://192.168.2.212/manda3/sheapp_prototype/about.php</item>
+		<item>http://192.168.88.16/manda3/sheapp_prototype/crud_hazard_android.php</item>
+		<item>http://192.168.88.16/manda3/sheapp_prototype/crud_event.php</item>
+		<item>http://192.168.88.16/manda3/sheapp_prototype/contact.php</item>
+		<item>http://192.168.88.16/manda3/sheapp_prototype/notification.php</item>
+		<item>http://192.168.88.16/manda3/sheapp_prototype/account_conf.php</item>
+		<item>http://192.168.88.16/manda3/sheapp_prototype/about.php</item>
 	</string-array>
 
 
